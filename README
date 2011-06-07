@@ -1,1 +1,8 @@
-A ver simple sequential key generator using zookeeper.
+A ver simple sequential key generator using zookeeper. Ids are requested in blocks of configurable size to minimize
+contention. Sinchronization is achieved using the keygen node version id. A client will try to update the id counter
+using the last version id known to it, and if it failed, it will get the new counter version and try again.
+
+This can cause contention on multiple clients, but it is mitigated because it's strange for all the clients to run out
+of keys at the same time.
+
+Keys assigned to a node are not recoverable and lost if the client jvm is shutdown.
